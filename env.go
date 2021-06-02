@@ -20,7 +20,11 @@ func NewMemEnv() *Env {
 
 // NewMemEnv creates MemEnv for in-memory testing.
 func NewZsFsEnv(id uint32) *Env {
-	return NewNativeEnv(C.rocksdb_create_zs_env(C.uint32_t(id)))
+	ret := C.rocksdb_create_zs_env(C.uint32_t(id))
+	if ret == nil {
+		return nil
+	}
+	return NewNativeEnv(ret)
 }
 
 // NewNativeEnv creates a Environment object.
